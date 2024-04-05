@@ -60,11 +60,13 @@ Training logs and checkpoints will be saved to `./logs/exp_{dataset_name}/{args.
 ```shell
 bash scripts/run.sh dataset_name  # choose among {break_eggs, pour_milk, pour_liquid, tennis_forehand}
 ```
-Note: 
-+ <span style="color: red;">(UPDATE Apr. 2024 on Bounding Box Alignment)</span> It has been observed that the assumption of consistent video resolutions (e.g., [1024, 768] for Break Eggs) does not hold across all videos. 
-This discrepancy leads to improper scaling factors and misaligned bounding boxes with hands and objects (see ego/S16_168.256_173.581.mp4 for an example). 
+
+`--task align` is for basic AE2 training, `--task align_bbox` integrates hand and object detection results with an object-centric encoder.
+ 
+> [!NOTE]
+> **UPDATE (Apr. 2024) on Bounding Box Alignment**: It has been observed that the assumption of uniform video resolutions (e.g., [1024, 768] for Break Eggs) does not hold across all videos. 
+This discrepancy influences `--task align_bbox` as improper scaling factors were used, resulting in misaligned bounding boxes with hands and objects (see ego/S16_168.256_173.581.mp4 for an example). 
 Thanks to Mark Eric Endo for the finding! 
-+ `--task align` is for basic AE2 training, `--task align_bbox` integrates hand and object detection results with an object-centric encoder.
 + We implement different alignment objectives, `--loss` can be set as `tcc`, `dtw`, `dtw_consistency`, `dtw_contrastive` (ours) or `vava`.  
 + Modify `--ds_every_n_epoch` and `--save_every` to control the frequency of downstream evaluation and saving checkpoint.
 + During training, we only monitor downstream performance on validation data, it is suggested to pick the best model checkpoint based on val 
